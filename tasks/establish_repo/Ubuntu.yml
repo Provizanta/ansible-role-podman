@@ -1,0 +1,21 @@
+---
+
+- name: Ubuntu | establish prerequisites
+  become: true
+  apt:
+    name:
+      - gnupg-agent
+      - apt-transport-https
+
+- name: Ubuntu | add apt repository key
+  become: true
+  when: podman_apt_key_url is defined
+  apt_key:
+    url: "{{ podman_apt_key_url }}"
+    state: present
+
+- name: Ubuntu | add apt repository
+  become: true
+  apt_repository:
+    repo: "{{ podman_apt_repository }}"
+    filename: podman

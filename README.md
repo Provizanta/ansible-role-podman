@@ -29,9 +29,8 @@ Example Playbook
     - name: Converge
       hosts: all
       roles:
-        - role: lxd
+        - role: podman
           vars:
-            lxd_use_snap_daemon: false
 
 License
 -------
