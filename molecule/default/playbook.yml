@@ -1,0 +1,20 @@
+---
+
+- name: Converge
+  hosts: all
+  roles:
+    - role: podman
+      vars:
+
+  post_tasks:
+    - name: podman should be installed
+      block:
+        - name: check podman version
+          command: '/usr/bin/podman --version'
+          changed_when: false
+          register: r
+        - name: evaluate executable presence
+          assert:
+            that:
+              - r.rc == 0
+            fail_msg: podman should be installed
