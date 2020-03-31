@@ -34,3 +34,16 @@
   package:
     name: podman
     state: present
+  tags: install
+
+- name: configure
+  become: true
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
+  loop:
+    - etc/containers/registries.conf
+  tags: configure

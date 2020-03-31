@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+[registries.search]
+registries = [{{ podman_registries_search | map('regex_replace', '(.*)', "'\\1'") | join(', ') }}]
+
+[registries.insecure]
+registries = [{{ podman_registries_insecure | map('regex_replace', '(.*)', "'\\1'") | join(', ') }}]
+
+[registries.block]
+registries = [{{ podman_registries_block | map('regex_replace', '(.*)', "'\\1'") | join(', ') }}]
