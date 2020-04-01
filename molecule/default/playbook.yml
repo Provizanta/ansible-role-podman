@@ -5,6 +5,28 @@
   roles:
     - role: podman
       vars:
+        podman_registries_search:
+          - 'docker.io'
+        podman_registries_block:
+          - 'registry.fedoraproject.org'
+        podman_policy:
+          default:
+            - type: insecureAcceptAnything
+          transports:
+            docker-daemon:
+              '':
+                - type: insecureAcceptAnything
+        podman_storage:
+          storage:
+            driver: "overlay"
+            runroot: "/var/run/containers/storage"
+            graphroot: "/var/lib/containers/storage"
+
+          storage.options:
+            additionalimagestores: []
+            size: ""
+            override_kernel_check: "true"
+
 
   post_tasks:
     - name: podman should be installed

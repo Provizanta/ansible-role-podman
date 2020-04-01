@@ -37,15 +37,18 @@
   tags: install
 
 - name: configure settings
+  when: item.use | default(true)
   become: true
   template:
-    src: "{{ item }}.j2"
-    dest: "/{{ item }}"
+    src: "{{ item.path | default(item) }}.j2"
+    dest: "/{{ item.path | default(item) }}"
     owner: root
     group: root
     mode: "u=rw,go=r"
   loop:
     - etc/containers/registries.conf
+    - path: etc/containers/storage.conf
+      use: "{{ podman_storage is defined }}"
   tags: configure
 
 - name: configure policy

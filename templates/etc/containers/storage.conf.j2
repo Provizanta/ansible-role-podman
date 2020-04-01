@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+{% for section, elements in podman_storage.items() %}
+[{{ section }}]
+{%   for key, value in elements.items() %}
+{{ key }} = {% if not value is iterable or value is string %}"{{ value }}"
+{% else %}[
+{%       for v in value %}
+    {{ "'%s'\n" | format(v) }}
+{%       endfor %}
+]
+{%     endif %}
+{%   endfor %}
+
+{% endfor %}
