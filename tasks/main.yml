@@ -76,3 +76,29 @@
     group: root
     mode: "u=rw,go=r"
   tags: configure
+
+- name: ensure hook directory presence
+  when: podman_hooks is defined
+  become: true
+  file:
+    path: "/usr/share/containers/oci/hooks.d/"
+    state: directory
+    recurse: true
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
+  tags: configure
+
+- name: establish hooks
+  when: podman_hooks is defined
+  become: true
+  copy:
+    content: |
+      {{ item.value | to_nice_json }}
+
+    dest: "/usr/share/containers/oci/hooks.d/{{ item.key }}.json"
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
+  loop: "{{ podman_hooks | default({}) | dict2items }}"
+  tags: configure
