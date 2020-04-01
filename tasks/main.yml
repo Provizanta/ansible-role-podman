@@ -36,7 +36,7 @@
     state: present
   tags: install
 
-- name: configure
+- name: configure settings
   become: true
   template:
     src: "{{ item }}.j2"
@@ -46,4 +46,17 @@
     mode: "u=rw,go=r"
   loop:
     - etc/containers/registries.conf
+  tags: configure
+
+- name: configure policy
+  when: podman_policy is defined
+  become: true
+  copy:
+    content: |
+      {{ podman_policy | to_nice_json }}
+
+    dest: /etc/containers/policy.json
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
   tags: configure
