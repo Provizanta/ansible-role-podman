@@ -21,8 +21,9 @@ These variables are defined in [defaults/main.yml](./defaults/main.yml):
 
 These variables can be specified:
 
-    podman_policy:          # dict, YAML to be converted to policy.json content
+    podman_policy:          # dict, YAML to be converted to 'policy.json' file content
     podman_storage:         # dict, YAML imitating INI like 'storage.conf' file
+    podman_seccomp:         # dict, YAML to be converted to 'seccomp.json' file content
 
 Dependencies
 ------------
