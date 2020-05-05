@@ -81,7 +81,7 @@
   when: podman_hooks is defined
   become: true
   file:
-    path: "/usr/share/containers/oci/hooks.d/"
+    path: "/etc/containers/oci/hooks.d/"
     state: directory
     recurse: true
     owner: root
@@ -96,7 +96,7 @@
     content: |
       {{ item.value | to_nice_json }}
 
-    dest: "/usr/share/containers/oci/hooks.d/{{ item.key }}.json"
+    dest: "/etc/containers/oci/hooks.d/{{ item.key }}.json"
     owner: root
     group: root
     mode: "u=rw,go=r"
