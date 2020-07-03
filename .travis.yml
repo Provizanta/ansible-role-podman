@@ -10,6 +10,7 @@ env:
   global:
     - ROLE_NAME: podman
   matrix:
+    - MOLECULE_DISTRO_BOX: generic/ubuntu2004
     - MOLECULE_DISTRO_BOX: generic/ubuntu1804
 
 install:

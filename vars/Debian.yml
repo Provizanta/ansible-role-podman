@@ -1,5 +1,5 @@
 ---
 
-# podman_apt_key_url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/Release.key"
-# podman_apt_repository: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/ /"    # official
-podman_apt_repository: ppa:projectatomic/ppa
+podman_apt_key_url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/Release.key"
+podman_apt_repository: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/ /"
+# podman_apt_repository: ppa:projectatomic/ppa    # unofficial
