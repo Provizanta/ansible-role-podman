@@ -2,6 +2,7 @@
 
 galaxy_info:
   role_name: podman
+  namespace: provizanta
   author: Tibor Csoka
   description: |
     "Install and setup podman."

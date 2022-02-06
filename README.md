@@ -1,7 +1,7 @@
 Ansible role: podman
 =========
 
-[![Build Status](https://travis-ci.com/Provizanta/ansible-role-podman.svg?branch=master)](https://travis-ci.com/Provizanta/ansible-role-podman)
+![main Build status](https://github.com/Provizanta/ansible-role-podman/actions/workflows/main.yml/badge.svg)
 
 Establish and configure podman for Linux.
 
