@@ -3,7 +3,7 @@
 - name: Converge
   hosts: all
   roles:
-    - role: podman
+    - role: ansible-role-podman
       vars:
         podman_registries_search:
           - 'docker.io'
