@@ -36,28 +36,65 @@
     state: present
   tags: install
 
-- name: configure settings
-  when: item.use | default(true)
+- name: configure registries
+  when: podman_registries is defined
   become: true
-  template:
-    src: "{{ item.path | default(item) }}.j2"
-    dest: "/{{ item.path | default(item) }}"
+  copy:
+    content: "{{ podman_registries }}"
+    dest: /etc/containers/registries.conf
     owner: root
     group: root
     mode: "u=rw,go=r"
-  loop:
-    - etc/containers/registries.conf
-    - path: etc/containers/storage.conf
-      use: "{{ podman_storage is defined }}"
+  tags: configure
+
+- name: assert registries.conf.d
+  when: podman_registries_conf_d
+  loop: "{{ podman_registries_conf_d | dict2items | map(attribute='key') | list }}"
+  assert:
+    that:
+      - item is regex('^.*.conf$')
+  tags: configure
+
+-
+- name: registries conf.d directory
+  when: podman_registries_conf_d is defined
+  become: true
+  file:
+    path: /etc/containers/registries.conf.d
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
+    state: directory
+  tags: configure
+
+- name: configure registries conf.d
+  when: podman_registries_conf_d is defined
+  become: true
+  loop: "{{ podman_registries_conf_d | dict2items }}"
+  copy:
+    content: "{{ item.value }}"
+    dest: /etc/containers/registries.conf.d/{{ item.key | basename }}
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
+  tags: configure
+
+- name: configure storage
+  when: podman_storage is defined
+  become: true
+  template:
+    src: "etc/containers/storage.conf.j2"
+    dest: /etc/containers/storage.conf
+    owner: root
+    group: root
+    mode: "u=rw,go=r"
   tags: configure
 
 - name: configure policy
   when: podman_policy is defined
   become: true
   copy:
-    content: |
-      {{ podman_policy | to_nice_json }}
-
+    content: "{{ podman_policy | to_nice_json }}"
     dest: /etc/containers/policy.json
     owner: root
     group: root
@@ -68,9 +105,7 @@
   when: podman_seccomp is defined
   become: true
   copy:
-    content: |
-      {{ podman_seccomp | to_nice_json }}
-
+    content: "{{ podman_seccomp | to_nice_json }}"
     dest: /usr/share/containers/seccomp.json
     owner: root
     group: root
@@ -93,9 +128,7 @@
   when: podman_hooks is defined
   become: true
   copy:
-    content: |
-      {{ item.value | to_nice_json }}
-
+    content: "{{ item.value | to_nice_json }}"
     dest: "/etc/containers/oci/hooks.d/{{ item.key }}.json"
     owner: root
     group: root

@@ -5,10 +5,18 @@
   roles:
     - role: ansible-role-podman
       vars:
-        podman_registries_search:
-          - 'docker.io'
-        podman_registries_block:
-          - 'registry.fedoraproject.org'
+        podman_registries: |-
+          unqualified-search-registries = ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+
+          [[registry]]
+          location="localhost:5000"
+          insecure=true
+        podman_registries_conf_d:
+          100-example-blocking.conf: |-
+            [[registry]]]
+            location="registry.example.org"
+            prefix="registry.example.org/example"
+            blocked=true
         podman_policy:
           default:
             - type: insecureAcceptAnything
@@ -21,7 +29,6 @@
             driver: "overlay"
             runroot: "/var/run/containers/storage"
             graphroot: "/var/lib/containers/storage"
-
           storage.options:
             additionalimagestores: []
             size: ""
