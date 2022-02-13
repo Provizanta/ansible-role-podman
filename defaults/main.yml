@@ -1,5 +1,1 @@
 ---
-
-podman_registries_search: ['docker.io']
-podman_registries_insecure: []
-podman_registries_block: []
